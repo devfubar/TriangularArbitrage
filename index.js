@@ -79,7 +79,7 @@ require('./lib/DBCore')(logger, (err, db)=>{
     ctrl.options.storage.logHistory = false;
   }
   
-  ctrl.UI       = require('./lib/UI')(ctrl.options),
+  ctrl.UI       = process.env.enableUI !== "false" ? require('./lib/UI')(ctrl.options) : null;
   ctrl.events   = require('./lib/EventsCore')(ctrl);
 
   // We're ready to start. Load up the webhook streams and start making it rain.

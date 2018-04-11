@@ -13,4 +13,6 @@ RUN npm install --only=production
 # Bundle app source
 COPY . .
 
+ENV enableUI=false
+
 CMD [ "npm", "start" ]
