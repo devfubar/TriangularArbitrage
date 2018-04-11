@@ -45,7 +45,7 @@ var botOptions = {
     trading: {
       paperOnly: true,
       // only candidates with over x% gain potential are queued for trading
-      minQueuePercentageThreshold: 3,
+      minQueuePercentageThreshold: 2,
       // how many times we need to see the same opportunity before deciding to act on it
       minHitsThreshold: 5
     }
@@ -83,7 +83,11 @@ require('./lib/DBCore')(logger, (err, db)=>{
   ctrl.events   = require('./lib/EventsCore')(ctrl);
 
   // We're ready to start. Load up the webhook streams and start making it rain.
-  require('./lib/BotCore')(ctrl);
+  ctrl.core = require('./lib/BotCore')(ctrl);
+  if(process.env.enableTWitter === "true") {
+    ctrl.logger.info('** Starting twitter');
+    require('./lib/twitterFeed')(ctrl);
+  }
   
   ctrl.logger.info('----- Bot Startup Finished -----');
 });
